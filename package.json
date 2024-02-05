@@ -1,0 +1,14 @@
+{
+  "name": "custom-node-file-creator",
+  "version": "1.0.2",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "bin": {
+    "custom-node-file-creator": "index.js"
+  },
+  "author": "Pedro Dias [pedroxford]",
+  "license": "MIT"
+}

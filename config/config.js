@@ -46,7 +46,7 @@ function prepareInit() {
     stdio: "inherit",
     encoding: "utf-8",
   });
-  const tmpFileLocation = "./tmp/init_choose.txt";
+  const tmpFileLocation = "./executors/tmp/init_choose.txt";
   if (child.error || child.status !== 0) {
     console.error(
       "Erro ao executar o script shell:",
@@ -56,7 +56,7 @@ function prepareInit() {
   }
 
   const data = fs.readFileSync(tmpFileLocation, "utf8");
-  deleteFile("./tmp");
+  deleteFile("./executors/tmp");
   return data.trim();
 }
 

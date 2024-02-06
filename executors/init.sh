@@ -3,7 +3,9 @@
 options=("JavaScript" "TypeScript" "Sair")
 selectedOption=0
 finalChoose=''
-tempFilePath="./tmp/init_choose.txt"
+currentDir=$(dirname "$0")
+tempFilePath="${currentDir}/tmp/init_choose.txt"
+echo $currentDir
 tempFileDir=$(dirname "$tempFilePath")
 
 trap 'tput sgr0' EXIT  # Restaura a cor ao sair do script

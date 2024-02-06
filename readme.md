@@ -1,17 +1,63 @@
-Bem-vindo ao Custom node file creator! Uma biblioteca JavaScript incrível para realizar criacoes personalizadas de arquivos para voce, de acordo com a estrutura do seu projeto.
+# Custom Creator 🚀
 
-## Instalação
+![Versão](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![Licença](https://img.shields.io/badge/license-MIT-green.svg)
 
-Para começar, instale a Custom node file creator via npm:
+Custom Creator é uma ferramenta de linha de comando desenhada para acelerar o desenvolvimento de aplicações, permitindo a rápida criação de modelos e controladores com base em configurações definidas pelo usuário.
+
+## 🌟 Início Rápido
+
+Este guia assume a pré-instalação do Node.js e npm.
+
+### 🛠 Instalação
+
+Intale a biblioteca em seu projeto:
 
 ```bash
 npm install custom-node-file-creator
 ```
-## Inicializacao
-antes de criar seus arquivos, inicialize o a lib com:
-``` bash 
-custom-node-file-creator init
+
+## ⚙ Configuração
+
+Inicialize a ferramenta no seu projeto com:
+
+```
+npx custom-node-file-creator init
 ```
 
-### Sobre essa lib
-lembrando que esta lib esta sendo mantida por apenas 2 devs e serve como estudo, mas sinta-se livre pra usa-la e sugerir alteracoes 
+Isso gera um custom-creator.json no seu projeto com configurações iniciais.
+
+## 📚 Uso
+
+Comandos disponíveis:
+
+init: Prepara a ferramenta para uso no projeto.</br>
+create:model <nome>: Cria um modelo.</br>
+create:controller <nome>: Cria um controlador.
+
+Criar um modelo:
+
+```
+npx custom-node-file-creator create:model MeuModelo
+```
+
+Criar um controlador:
+
+```
+npx custom-node-file-creator create:controller MeuControlador
+```
+
+## 🛠 Configuração Avançada
+
+Edite custom-creator.json para personalizar configurações:
+
+rootDir: Diretório raiz para criação de arquivos.</br>
+controllerDirPath: Onde os controladores serão salvos.</br>
+modelDirPath: Onde os modelos serão salvos.</br>
+fileType: Tipo de arquivo (JS ou TS).
+
+📂 Scripts de Criação
+Localizados em executors, esses scripts definem templates de arquivos. Sinta-se livre para ajustá-los.
+
+🤝 Contribuindo
+Contribuições, questões e solicitações de pull são bem-vindas!

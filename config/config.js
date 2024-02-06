@@ -13,7 +13,7 @@ function writeConfigFile(filePath) {
   const content = `{
     "rootDir": "src/",
     "controllerDirPath": "controller/",
-    "modelDirPath": "model/"
+    "modelDirPath": "model/",
     "fileType": "JS"
   }`;
 
@@ -52,7 +52,8 @@ function callCreator(command, ...args) {
   if (!command) return console.error("command not valid!");
   const { method, hasParams } = commandOptionsMap[command];
   if (hasParams) {
-    isInitialized() || method(args);
+    isInitialized();
+    method(args);
   } else {
     method();
   }
@@ -60,9 +61,8 @@ function callCreator(command, ...args) {
 
 function isInitialized() {
   if (!fs.existsSync(configFilePath))
-    return console.error(
-      "lib is not initialized or config file its not on root"
-    );
+    console.error("lib is not initialized or config file its not on root");
+  return false;
 }
 
 function getConfigFileContent() {
@@ -76,8 +76,6 @@ function getConfigFileContent() {
 }
 
 module.exports = {
-  commandOptionsMap,
   checkArgument,
-  writeConfigFile,
   callCreator,
 };

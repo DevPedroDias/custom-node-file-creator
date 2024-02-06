@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { execSync } = require("child_process");
+const { execSync, spawnSync } = require("child_process");
 
 const commandOptionsMap = {
   init: { method: init, hasParams: false },
@@ -9,16 +9,16 @@ const commandOptionsMap = {
 
 const configFilePath = "./custom-creator.json";
 
-function writeConfigFile(filePath) {
-  const content = `{
-    "rootDir": "src/",
-    "controllerDirPath": "controller/",
-    "modelDirPath": "model/"
-    "fileType": "JS"
-  }`;
+const configFileContent = {
+  rootDir: "src/",
+  controllerDirPath: "controller/",
+  modelDirPath: "model/",
+  fileType: "JS",
+};
 
+function writeConfigFile(filePath) {
   try {
-    fs.writeFileSync(filePath, content);
+    fs.writeFileSync(filePath, JSON.stringify(configFileContent));
   } catch (error) {
     console.error(`error on init lib ${error.message}`);
   }
@@ -41,18 +41,45 @@ function createController(fileName) {
   execSync(command);
 }
 
+function prepareInit() {
+  const child = spawnSync("bash", ["./executors/init.sh"], {
+    stdio: "inherit",
+    encoding: "utf-8",
+  });
+  const tmpFileLocation = "./executors/tmp/init_choose.txt";
+  if (child.error || child.status !== 0) {
+    console.error(
+      "Erro ao executar o script shell:",
+      child.error || child.stderr
+    );
+    process.exit(1);
+  }
+
+  const data = fs.readFileSync(tmpFileLocation, "utf8");
+  deleteFile("./executors/tmp");
+  return data.trim();
+}
+
 function init() {
-  const command = `touch ${configFilePath}`;
-  execSync(command);
-  writeConfigFile(configFilePath);
-  console.log("intiliazed with success");
+  const bashResponse = prepareInit();
+  console.log(bashResponse);
+  if (!bashResponse.length) {
+    return console.error("Please, select a file type");
+  } else {
+    const command = `touch ${configFilePath}`;
+    configFileContent.fileType = bashResponse;
+    spawnSync("bash", ["-c", command], { stdio: "inherit" });
+    writeConfigFile(configFilePath);
+    console.log("Initialized with success");
+  }
 }
 
 function callCreator(command, ...args) {
   if (!command) return console.error("command not valid!");
   const { method, hasParams } = commandOptionsMap[command];
   if (hasParams) {
-    isInitialized() || method(args);
+    isInitialized();
+    method(args);
   } else {
     method();
   }
@@ -60,9 +87,8 @@ function callCreator(command, ...args) {
 
 function isInitialized() {
   if (!fs.existsSync(configFilePath))
-    return console.error(
-      "lib is not initialized or config file its not on root"
-    );
+    console.error("lib is not initialized or config file its not on root");
+  return false;
 }
 
 function getConfigFileContent() {
@@ -75,9 +101,12 @@ function getConfigFileContent() {
   }
 }
 
+function deleteFile(path) {
+  const command = `rm -r ${path}`;
+  execSync(command);
+}
+
 module.exports = {
-  commandOptionsMap,
   checkArgument,
-  writeConfigFile,
   callCreator,
 };

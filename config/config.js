@@ -1,5 +1,6 @@
 const fs = require("fs");
 const { execSync, spawnSync } = require("child_process");
+const path = require("path");
 
 const commandOptionsMap = {
   init: { method: init, hasParams: false },
@@ -8,6 +9,7 @@ const commandOptionsMap = {
 };
 
 const configFilePath = "./custom-creator.json";
+const executorsPath = `${__dirname}/../executors/`;
 
 const configFileContent = {
   rootDir: "src/",
@@ -32,21 +34,21 @@ function checkArgument(index, name, command) {
 }
 
 function createModel(fileName) {
-  const command = `bash ./executors/model-creator.sh ${fileName}`;
+  const command = `bash ${executorsPath}model-creator.sh ${fileName}`;
   execSync(command);
 }
 
 function createController(fileName) {
-  const command = `bash ./executors/controller-creator.sh ${fileName}`;
+  const command = `bash ${executorsPath}controller-creator.sh ${fileName}`;
   execSync(command);
 }
 
 function prepareInit() {
-  const child = spawnSync("bash", ["./executors/init.sh"], {
+  const child = spawnSync("bash", [`${executorsPath}init.sh`], {
     stdio: "inherit",
     encoding: "utf-8",
   });
-  const tmpFileLocation = "./executors/tmp/init_choose.txt";
+  const tmpFileLocation = `${executorsPath}tmp/init_choose.txt`;
   if (child.error || child.status !== 0) {
     console.error(
       "Erro ao executar o script shell:",
@@ -56,7 +58,7 @@ function prepareInit() {
   }
 
   const data = fs.readFileSync(tmpFileLocation, "utf8");
-  deleteFile("./executors/tmp");
+  deleteFile(`${executorsPath}tmp`);
   return data.trim();
 }
 

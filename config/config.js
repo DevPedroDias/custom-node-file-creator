@@ -14,6 +14,7 @@ function writeConfigFile(filePath) {
     "rootDir": "src/",
     "controllerDirPath": "controller/",
     "modelDirPath": "model/"
+    "fileType": "JS"
   }`;
 
   try {

@@ -9,6 +9,10 @@
   "bin": {
     "custom-node-file-creator": "index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DevPedroDias/custom-node-file-creator"
+  },
   "author": "Pedro Dias [pedroxford]",
   "license": "MIT"
 }

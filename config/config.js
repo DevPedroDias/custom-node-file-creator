@@ -77,20 +77,31 @@ function init() {
 }
 
 function callCreator(command, ...args) {
-  if (!command) return console.error("command not valid!");
+  if (!command) {
+    console.error("command not valid!");
+    return;
+  }
   const { method, hasParams } = commandOptionsMap[command];
-  if (hasParams) {
-    isInitialized();
-    method(args);
-  } else {
-    method();
+
+  try {
+    if (isInitialized()) {
+      if (hasParams) {
+        method(args);
+      } else {
+        method();
+      }
+    }
+  } catch (error) {
+    console.error(error.message);
+    return;
   }
 }
 
 function isInitialized() {
-  if (!fs.existsSync(configFilePath))
-    console.error("lib is not initialized or config file its not on root");
-  return false;
+  if (!fs.existsSync(configFilePath)) {
+    throw new Error("lib is not initialized or config file its not on root");
+  }
+  return true;
 }
 
 function getConfigFileContent() {
